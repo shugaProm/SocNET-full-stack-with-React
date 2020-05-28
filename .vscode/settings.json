@@ -1,0 +1,12 @@
+{
+  "emmet.variables": {
+    "javascript": "javascriptreact"
+  },
+  "emmet.syntaxProfiles": {},
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+},
+"prettier.htmlWhitespaceSensitivity": "ignore",
+"editor.formatOnPaste": true,
+"editor.formatOnSave": true
+}
