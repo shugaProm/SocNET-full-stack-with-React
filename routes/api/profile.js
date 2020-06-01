@@ -23,14 +23,14 @@ router.get(
     const errors = {};
     Profile.findOne({ user: req.user.id })
       .populate("user", ["name", "avatar"])
-      .then(profile => {
+      .then((profile) => {
         errors.noprofile = "There is no Profile for this user";
         if (!profile) {
           return res.status(404).json(errors);
         }
         res.json(profile);
       })
-      .catch(err => res.status(404).json(err));
+      .catch((err) => res.status(404).json(err));
   }
 );
 
@@ -42,14 +42,14 @@ router.get("/handle/:handle", (req, res) => {
 
   Profile.findOne({ handle: req.params.handle })
     .populate("user", ["name", "avatar"])
-    .then(profile => {
+    .then((profile) => {
       if (!profile) {
         errors.noprofile = "There is no profile for this user";
         res.status(404).json(errors);
       }
       res.json(profile);
     })
-    .catch(err => res.status(404).json(err));
+    .catch((err) => res.status(404).json(err));
 });
 
 // @route   GET api/profile/user/:user_id
@@ -60,14 +60,14 @@ router.get("/user/:user_id", (req, res) => {
 
   Profile.findOne({ user: req.params.user_id })
     .populate("user", ["name", "avatar"])
-    .then(profile => {
+    .then((profile) => {
       if (!profile) {
         errors.noprofile = "There is no profile for this user";
         res.status(404).json(errors);
       }
       res.json(profile);
     })
-    .catch(err =>
+    .catch((err) =>
       res.status(404).json({ profile: "There is no profile for this user" })
     );
 });
@@ -80,14 +80,16 @@ router.get("/all", (req, res) => {
   // using find method not findOne because we are getting one or more profiles
   Profile.find()
     .populate("user", ["name", "avatar"])
-    .then(profiles => {
+    .then((profiles) => {
       if (!profiles) {
         errors.noprofiles = "There are no profiles";
         res.status(404).json(errors);
       }
       res.json(profiles);
     })
-    .catch(err => res.status(404).json({ profiles: "There are no profiles" }));
+    .catch((err) =>
+      res.status(404).json({ profiles: "There are no profiles" })
+    );
 });
 
 // @route   POST api/profile
@@ -129,23 +131,25 @@ router.post(
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
 
     // search for the logged in user with the user id ==== this comes from the users embedded into the Profile model
-    Profile.findOne({ user: req.user.id }).then(profile => {
+    Profile.findOne({ user: req.user.id }).then((profile) => {
       if (profile) {
         // Update
         Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFields },
           { new: true }
-        ).then(profile => res.json(profile));
+        ).then((profile) => res.json(profile));
       } else {
         // check if handle exists
-        Profile.findOne({ handle: profileFields.handle }).then(profile => {
+        Profile.findOne({ handle: profileFields.handle }).then((profile) => {
           if (profile) {
             errors.handle = "That handle already exists";
             res.status(400).json(errors);
           }
           // Save Profile
-          new Profile(profileFields).save().then(profile => res.json(profile));
+          new Profile(profileFields)
+            .save()
+            .then((profile) => res.json(profile));
         });
       }
     });
@@ -168,7 +172,7 @@ router.post(
       // Return any errors with 400 status
       return res.status(400).json(errors);
     }
-    Profile.findOne({ user: req.user.id }).then(profile => {
+    Profile.findOne({ user: req.user.id }).then((profile) => {
       const newExp = {
         title: req.body.title,
         company: req.body.company,
@@ -181,7 +185,7 @@ router.post(
 
       // add to experience array == remember that the profile found fro the Profile Model contains an array of experience fields
       profile.experience.unshift(newExp);
-      profile.save().then(profile => res.json(profile));
+      profile.save().then((profile) => res.json(profile));
     });
   }
 );
@@ -202,7 +206,7 @@ router.post(
       // Return any errors with 400 status
       return res.status(400).json(errors);
     }
-    Profile.findOne({ user: req.user.id }).then(profile => {
+    Profile.findOne({ user: req.user.id }).then((profile) => {
       const newEdu = {
         school: req.body.school,
         degree: req.body.degree,
@@ -215,7 +219,7 @@ router.post(
 
       // add to education array ==== remember that the profile found fro the Profile Model contains an array of education fields
       profile.education.unshift(newEdu);
-      profile.save().then(profile => res.json(profile));
+      profile.save().then((profile) => res.json(profile));
     });
   }
 );
@@ -230,19 +234,19 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findOne({ user: req.user.id })
-      .then(profile => {
+      .then((profile) => {
         // Get remove index
         const removeIndex = profile.experience
-          .map(item => item.id)
+          .map((item) => item.id)
           .indexOf(req.params.exp_id);
 
         // splice out of array
         profile.experience.splice(removeIndex, 1);
 
         // save
-        profile.save().then(profile => res.json(profile));
+        profile.save().then((profile) => res.json(profile));
       })
-      .catch(err => res.status(404).json(err));
+      .catch((err) => res.status(404).json(err));
   }
 );
 
@@ -256,19 +260,19 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findOne({ user: req.user.id })
-      .then(profile => {
+      .then((profile) => {
         // Get remove index
         const removeIndex = profile.education
-          .map(item => item.id)
+          .map((item) => item.id)
           .indexOf(req.params.edu_id);
 
         // splice out of array
         profile.education.splice(removeIndex, 1);
 
         // save
-        profile.save().then(profile => res.json(profile));
+        profile.save().then((profile) => res.json(profile));
       })
-      .catch(err => res.status(404).json(err));
+      .catch((err) => res.status(404).json(err));
   }
 );
 

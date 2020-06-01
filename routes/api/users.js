@@ -25,7 +25,7 @@ router.post("/register", (req, res) => {
   }
 
   User.findOne({ email: req.body.email })
-    .then(user => {
+    .then((user) => {
       if (user) {
         errors.email = "Email already exists";
         return res.status(400).json(errors);
@@ -49,13 +49,13 @@ router.post("/register", (req, res) => {
             newUser.password = hash;
             newUser
               .save()
-              .then(user => res.json(user))
-              .catch(err => console.log(err));
+              .then((user) => res.json(user))
+              .catch((err) => console.log(err));
           });
         });
       }
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 });
 
 // @route   POST api/users/login
@@ -72,14 +72,14 @@ router.post("/login", (req, res) => {
   const password = req.body.password;
 
   // find the user by email
-  User.findOne({ email }).then(user => {
+  User.findOne({ email }).then((user) => {
     // check for user
     if (!user) {
       errors.email = "User not found";
       res.status(404).json(errors);
     } else {
       // check password
-      bcrypt.compare(password, user.password).then(isMatch => {
+      bcrypt.compare(password, user.password).then((isMatch) => {
         if (isMatch) {
           // User Matched
 
@@ -89,7 +89,7 @@ router.post("/login", (req, res) => {
           jwt.sign(
             payload,
             keys.secretOrKey,
-            { expiresIn: 1800 },
+            { expiresIn: 3600 },
             (err, token) => {
               res.json({ success: true, token: "Bearer " + token });
             }
