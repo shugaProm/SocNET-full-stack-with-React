@@ -25,7 +25,7 @@ class Register extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
@@ -114,7 +114,7 @@ Register.propTypes = {
   errors: PropTypes.object.isRequired,
 };
 
-const mapStatetoProps = state => ({
+const mapStatetoProps = (state) => ({
   auth: state.auth,
   errors: state.errors,
 });
