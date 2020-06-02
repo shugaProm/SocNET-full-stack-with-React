@@ -1,6 +1,5 @@
-module.exports = {
-  mongoURI: "mongodb://127.0.0.1:27017/socnet",
-  secretOrKey: "secret",
-};
-
-//"mongodb+srv://chiemela:3uvrophsmmUB45fh@cluster0-eajfq.mongodb.net/test?retryWrites=true&w=majority",
+if (process.env.NODE_ENV === "production") {
+  module.exports = require("./keys_prod");
+} else {
+  module.exports = require("./keys_dev");
+}
