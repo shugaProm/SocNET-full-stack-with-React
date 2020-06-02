@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   ADD_POST,
   GET_ERRORS,
+  CLEAR_ERRORS,
   POST_LOADING,
   GET_POSTS,
   GET_POST,
@@ -10,6 +11,7 @@ import {
 
 // add post
 export const addPost = (postData) => (dispatch) => {
+  dispatch(clearErrors());
   axios
     .post("/api/posts", postData)
     .then((res) =>
@@ -66,20 +68,21 @@ export const getPost = (id) => (dispatch) => {
 
 // delete post
 export const deletePost = (id) => (dispatch) => {
-  axios
-    .delete(`/api/posts/${id}`)
-    .then((res) =>
-      dispatch({
-        type: DELETE_POST,
-        payload: id,
-      })
-    )
-    .catch((err) =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data,
-      })
-    );
+  if (window.confirm("Delete Post? This can NOT be undone!"))
+    axios
+      .delete(`/api/posts/${id}`)
+      .then((res) =>
+        dispatch({
+          type: DELETE_POST,
+          payload: id,
+        })
+      )
+      .catch((err) =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data,
+        })
+      );
 };
 
 // add like
@@ -95,7 +98,7 @@ export const addLike = (id) => (dispatch) => {
     );
 };
 
-// remove post
+// remove like
 export const removeLike = (id) => (dispatch) => {
   axios
     .post(`/api/posts/unlike/${id}`)
@@ -117,6 +120,7 @@ export const setPostLoading = () => {
 
 // add comment
 export const addComment = (postId, commentData) => (dispatch) => {
+  dispatch(clearErrors());
   axios
     .post(`/api/posts/comment/${postId}`, commentData)
     .then((res) =>
@@ -135,18 +139,26 @@ export const addComment = (postId, commentData) => (dispatch) => {
 
 // delete comment
 export const deleteComment = (postId, commentId) => (dispatch) => {
-  axios
-    .delete(`/api/posts/comment/${postId}/${commentId}`)
-    .then((res) =>
-      dispatch({
-        type: GET_POST,
-        payload: res.data,
-      })
-    )
-    .catch((err) =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data,
-      })
-    );
+  if (window.confirm("Delete Comment? This can NOT be undone!"))
+    axios
+      .delete(`/api/posts/comment/${postId}/${commentId}`)
+      .then((res) =>
+        dispatch({
+          type: GET_POST,
+          payload: res.data,
+        })
+      )
+      .catch((err) =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data,
+        })
+      );
+};
+
+// clear errors
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS,
+  };
 };
