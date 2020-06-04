@@ -16,6 +16,7 @@ npm install
 ## Install client dependencies
 
 cd client
+
 npm install
 
 ## Run both server and client from root
