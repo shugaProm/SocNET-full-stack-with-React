@@ -57,3 +57,8 @@ If such a message exists then we log out the user and clear the profile from red
 You can see the implementation of the interceptor and axios instance in utils/api.js
 
 Creating an instance of axios also cleans up our action creators in actions/auth.js, actions/profile.js and actions/post.js
+
+## App Info
+
+Author: Ezeike Promise Chiemela
+Version: 1.0.0
