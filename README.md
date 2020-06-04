@@ -60,5 +60,6 @@ Creating an instance of axios also cleans up our action creators in actions/auth
 
 ## App Info
 
-Author: Ezeike Promise Chiemela
+Author: Ezeike Promise Chiemela,
+
 Version: 1.0.0
