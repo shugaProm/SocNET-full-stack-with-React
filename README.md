@@ -5,6 +5,10 @@
 This is a MERN stack application from the MERN Stack Front To Back.
 It is a small social network app that includes authentication, profiles and forum posts.
 
+## Link to Open the deployed app deployed to Heroku
+
+https://protected-beyond-41189.herokuapp.com/
+
 ## Install server dependencies
 
 npm install
